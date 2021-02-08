@@ -5,13 +5,12 @@ import 'package:lottie/lottie.dart';
 import 'package:cari_teman/models/user.dart';
 import 'package:cari_teman/providers/auth.dart';
 import 'package:cari_teman/providers/user_provider.dart';
-import 'package:cari_teman/util/validators.dart';
-import 'package:cari_teman/util/widgets.dart';
+import 'package:cari_teman/utils/validators.dart';
+import 'package:cari_teman/utils/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:cari_teman/util/extensions.dart';
-import 'package:cari_teman/util/animations.dart';
-import 'package:cari_teman/util/router.dart';
-import 'package:cari_teman/views/main_screen.dart';
+import 'package:cari_teman/utils/extensions.dart';
+import 'package:cari_teman/utils/animations.dart';
+import 'package:cari_teman/utils/router.dart';
 
 class Login extends StatefulWidget {
   @override

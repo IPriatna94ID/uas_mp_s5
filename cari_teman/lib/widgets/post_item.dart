@@ -1,23 +1,34 @@
+import 'package:cari_teman/views/profile.dart';
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:cari_teman/utils/app_url.dart';
+import 'package:cari_teman/widgets/chat/conversation.dart';
 
 class PostItem extends StatefulWidget {
-  final String dp;
+  final int id;
+  final int uid;
   final String name;
-  final String time;
+  final String dp;
   final String img;
+  final String text;
+  final String time;
 
-  PostItem({
-    Key key,
-    @required this.dp,
-    @required this.name,
-    @required this.time,
-    @required this.img
-  }) : super(key: key);
+  PostItem(
+      {Key key,
+      @required this.id,
+      @required this.uid,
+      @required this.name,
+      @required this.dp,
+      @required this.img,
+      @required this.text,
+      @required this.time})
+      : super(key: key);
   @override
   _PostItemState createState() => _PostItemState();
 }
 
 class _PostItemState extends State<PostItem> {
+  static Random random = Random();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,11 +38,20 @@ class _PostItemState extends State<PostItem> {
           children: <Widget>[
             ListTile(
               leading: CircleAvatar(
-                backgroundImage: AssetImage(
-                  "${widget.dp}",
-                ),
+                backgroundImage: (widget.dp != "" && widget.dp != null)
+                    ? NetworkImage(AppUrl.baseURL + "${widget.dp}")
+                    : AssetImage(
+                        "assets/images/cm${random.nextInt(10)}.jpeg",
+                      ),
+                backgroundColor: Colors.transparent,
               ),
-
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Profile(uid: widget.uid)),
+                );
+              },
               contentPadding: EdgeInsets.all(0),
               title: Text(
                 "${widget.name}",
@@ -47,17 +67,32 @@ class _PostItemState extends State<PostItem> {
                 ),
               ),
             ),
-
-            Image.asset(
-              "${widget.img}",
-              height: 170,
-              width: MediaQuery.of(context).size.width,
-              fit: BoxFit.cover,
-            ),
-
+            Image.network("${widget.img}"),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(5.0),
+                  child: Text(
+                    "${widget.text}",
+                    style: TextStyle(
+                      fontSize: 14.0,
+                    ),
+                  ),
+                )
+              ],
+            )
           ],
         ),
-        onTap: (){},
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return Conversation(id: widget.id);
+              },
+            ),
+          );
+        },
       ),
     );
   }

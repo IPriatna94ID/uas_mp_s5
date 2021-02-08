@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cari_teman/widgets/chat_item.dart';
-import 'package:cari_teman/util/data.dart';
+import 'package:cari_teman/utils/data.dart';
 import 'package:cari_teman/views/about.dart';
 
 class Chats extends StatefulWidget {

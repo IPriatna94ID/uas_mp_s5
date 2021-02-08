@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cari_teman/widgets/chat_bubble.dart';
-import 'package:cari_teman/util/data.dart';
+import 'package:cari_teman/utils/data.dart';
 
 class Conversation extends StatefulWidget {
   @override

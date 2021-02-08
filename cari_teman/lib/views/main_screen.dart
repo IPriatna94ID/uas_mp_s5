@@ -5,6 +5,9 @@ import 'package:cari_teman/views/friends.dart';
 import 'package:cari_teman/views/home.dart';
 import 'package:cari_teman/views/notifications.dart';
 import 'package:cari_teman/views/profile.dart';
+import 'package:cari_teman/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cari_teman/utils/app_url.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -14,6 +17,17 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   PageController _pageController;
   int _page = 2;
+
+  User user;
+  int uid;
+
+  _loadCounter() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      uid = prefs.getInt("userId");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,10 +37,10 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: onPageChanged,
         children: <Widget>[
           Chats(),
-          Friends(),
+          Friends(uid: uid),
           Home(),
-          Notifications(),
-          Profile(),
+          Notifications(uid: uid),
+          Profile(uid: uid),
         ],
       ),
       bottomNavigationBar: Theme(
@@ -75,12 +89,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    _loadCounter();
     _pageController = PageController(initialPage: 2);
   }
 
   @override
   void dispose() {
     super.dispose();
+    uid = 0;
     _pageController.dispose();
   }
 

@@ -4,7 +4,7 @@ import 'package:cari_teman/pages/login.dart';
 import 'package:cari_teman/pages/register.dart';
 import 'package:cari_teman/providers/auth.dart';
 import 'package:cari_teman/providers/user_provider.dart';
-import 'package:cari_teman/util/shared_preference.dart';
+import 'package:cari_teman/utils/shared_preference.dart';
 import 'package:provider/provider.dart';
 import 'models/user.dart';
 import 'package:cari_teman/views/main_screen.dart';

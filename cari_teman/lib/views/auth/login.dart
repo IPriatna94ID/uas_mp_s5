@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:cari_teman/util/animations.dart';
-import 'package:cari_teman/util/const.dart';
-import 'package:cari_teman/util/enum.dart';
-import 'package:cari_teman/util/router.dart';
-import 'package:cari_teman/util/validations.dart';
+import 'package:cari_teman/utils/animations.dart';
+import 'package:cari_teman/utils/const.dart';
+import 'package:cari_teman/utils/enum.dart';
+import 'package:cari_teman/utils/router.dart';
+import 'package:cari_teman/utils/validations.dart';
 import 'package:cari_teman/main.dart';
 import 'package:cari_teman/widgets/custom_button.dart';
 import 'package:cari_teman/widgets/custom_text_field.dart';
-import 'package:cari_teman/util/extensions.dart';
+import 'package:cari_teman/utils/extensions.dart';
 
 class Login extends StatefulWidget {
   @override

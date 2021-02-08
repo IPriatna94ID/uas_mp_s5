@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:cari_teman/models/user.dart';
-import 'package:cari_teman/util/app_url.dart';
-import 'package:cari_teman/util/shared_preference.dart';
+import 'package:cari_teman/utils/app_url.dart';
+import 'package:cari_teman/utils/shared_preference.dart';
 
 enum Status {
   NotLoggedIn,
@@ -46,7 +46,6 @@ class AuthProvider with ChangeNotifier {
       final Map<String, dynamic> responseData = json.decode(response.body);
 
       var userData = responseData['data'];
-      print(userData);
 
       User authUser = User.fromJson(userData);
 
@@ -109,8 +108,8 @@ class AuthProvider with ChangeNotifier {
     return result;
   }
 
-  Future<Map<String, dynamic>> update(
-      String name, email, String password, String passwordConfirmation) async {
+  Future<Map<String, dynamic>> update(String uid, String name, String email,
+      String password, String passwordConfirmation) async {
     final Map<String, dynamic> registrationData = {
       'name': name,
       'email': email,
@@ -118,8 +117,22 @@ class AuthProvider with ChangeNotifier {
       'password_confirmation': passwordConfirmation
     };
 
-    return await post(AppUrl.updateProfile,
+    return await post(AppUrl.updateProfile + uid,
             body: json.encode(registrationData),
+            headers: {'Content-Type': 'application/json'})
+        .then(onUpdate)
+        .catchError(onError);
+  }
+
+  Future<Map<String, dynamic>> updateAvatar(
+      String userId, String fileName, String base64Image) async {
+    final Map<String, dynamic> postData = {
+      'file_name': fileName,
+      'file': base64Image,
+    };
+
+    return await post(AppUrl.updateProfile + userId,
+            body: json.encode(postData),
             headers: {'Content-Type': 'application/json'})
         .then(onUpdate)
         .catchError(onError);
@@ -136,7 +149,7 @@ class AuthProvider with ChangeNotifier {
       UserPreferences().saveUser(authUser);
       result = {
         'status': true,
-        'message': 'Successfully updated',
+        'message': 'Update profile berhasil',
         'data': authUser
       };
     } else {
@@ -144,6 +157,68 @@ class AuthProvider with ChangeNotifier {
       result = {
         'status': false,
         'message': 'Update failed',
+        'data': responseData
+      };
+    }
+
+    return result;
+  }
+
+  Future<Map<String, dynamic>> submitPost(String userId, String fileName,
+      String base64Image, String postText) async {
+    final Map<String, dynamic> postData = {
+      'user_id': userId,
+      'file': base64Image,
+      'file_name': fileName,
+      'text': postText
+    };
+    return await post(AppUrl.post,
+            body: json.encode(postData),
+            headers: {'Content-Type': 'application/json'})
+        .then(onSaved)
+        .catchError(onError);
+  }
+
+  Future<Map<String, dynamic>> follow(String uid, String fid) async {
+    final Map<String, dynamic> params = {'user_id': fid};
+    return await post(AppUrl.friends + uid,
+            body: json.encode(params),
+            headers: {'Content-Type': 'application/json'})
+        .then(onSaved)
+        .catchError(onError);
+  }
+
+  Future<Map<String, dynamic>> postComment(
+      String postId, String userId, String postText) async {
+    final Map<String, dynamic> postData = {
+      'post_id': postId,
+      'user_id': userId,
+      'text': postText
+    };
+    return await post(AppUrl.comments,
+            body: json.encode(postData),
+            headers: {'Content-Type': 'application/json'})
+        .then(onSaved)
+        .catchError(onError);
+  }
+
+  Future<Map<String, dynamic>> unfollow(String fid, String uid) async {
+    return await delete(AppUrl.friends + fid + '/' + uid,
+            headers: {'Content-Type': 'application/json'})
+        .then(onSaved)
+        .catchError(onError);
+  }
+
+  static Future<FutureOr> onSaved(Response response) async {
+    var result;
+    final Map<String, dynamic> responseData = json.decode(response.body);
+    if (response.statusCode == 200) {
+      result = {'status': true, 'message': 'Data saved'};
+    } else {
+      //  if (response.statusCode == 401) Get.toNamed("/login");
+      result = {
+        'status': false,
+        'message': 'Invalid request',
         'data': responseData
       };
     }

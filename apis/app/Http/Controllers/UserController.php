@@ -22,7 +22,7 @@ class UserController extends Controller
         return response($data);
     }
     public function getbyid($id){
-        $data = User::where('id',$id)->get();
+        $data = User::where('id',$id)->withCount('posts', 'followers', 'following', 'followed')->first();
         return response ($data);
     }
     public function save(Request $request){
@@ -70,13 +70,35 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id){
-        $data = User::where('id',$id)->first();
-        $data->name = $request->input('name');
-        $data->email = $request->input('email');
-        $data->password = $request->input('password');
-        $data->save();
+        $model = User::where('id', $id)->first();
+
+        if(!empty($request->input('name'))){
+            $model->name = $request->input('name');
+        }
+        
+        if(!empty($request->input('email'))){
+            $model->email = $request->input('email');
+        }
+        
+        if(!empty($request->input('password'))){
+            $model->password = md5($request->input('password'));
+        }
+
+        if(!empty($request->input('file'))){
+            $image_base64 = base64_decode($request->input('file'));
+            $path = 'uploads/' . $request->input('file_name');
+            file_put_contents($path, $image_base64);
+            $model->avatar = $path;
+        }
+
+        $model->save();
     
-        return response('Berhasil Merubah Data');
+        $data = array(
+            'status' => 'success',
+            'message' => 'Berhasil Merubah Data',
+            'data' => $model
+        );
+        return response($data);
     }
     
     public function delete($id){

@@ -137,8 +137,10 @@ class _ChatBubbleState extends State<ChatBubble> {
                               child: Text(
                                 widget.replyText,
                                 style: TextStyle(
-                                  color:
-                                      Theme.of(context).textTheme.headline6.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .headline6
+                                      .color,
                                   fontSize: 10.0,
                                 ),
                                 maxLines: 2,
@@ -170,11 +172,14 @@ class _ChatBubbleState extends State<ChatBubble> {
                               style: TextStyle(
                                 color: widget.isMe
                                     ? Colors.white
-                                    : Theme.of(context).textTheme.headline6.color,
+                                    : Theme.of(context)
+                                        .textTheme
+                                        .headline6
+                                        .color,
                               ),
                             ),
                           )
-                    : Image.asset(
+                    : Image.network(
                         "${widget.message}",
                         height: 130,
                         width: MediaQuery.of(context).size.width / 1.3,
