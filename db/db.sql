@@ -14,6 +14,7 @@
 
 
 -- Dumping database structure for cari_teman
+DROP DATABASE IF EXISTS `cari_teman`;
 CREATE DATABASE IF NOT EXISTS `cari_teman` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `cari_teman`;
 
@@ -192,18 +193,15 @@ CREATE TABLE IF NOT EXISTS `post_comments` (
   `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table cari_teman.post_comments: 6 rows
+-- Dumping data for table cari_teman.post_comments: 3 rows
 DELETE FROM `post_comments`;
 /*!40000 ALTER TABLE `post_comments` DISABLE KEYS */;
 INSERT INTO `post_comments` (`id`, `post_id`, `user_id`, `text`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
 	(5, 16, 14, 'wut?', '2021-02-08 10:13:58', '14', '2021-02-08 10:13:58', NULL),
 	(4, 16, 15, 'test', '2021-02-08 09:57:27', '15', '2021-02-08 09:57:27', NULL),
-	(6, 16, 15, 'mantips', '2021-02-08 15:03:37', '15', '2021-02-08 15:03:37', NULL),
-	(7, 17, 15, 'test', '2021-02-18 08:59:56', '16', '2021-02-18 08:59:56', NULL),
-	(8, 17, 15, 'wutt?', '2021-02-18 09:21:08', '15', '2021-02-18 09:21:08', NULL),
-	(9, 17, 16, 'ih lucu', '2021-02-18 09:23:58', '16', '2021-02-18 09:23:58', NULL);
+	(6, 16, 15, 'mantips', '2021-02-08 15:03:37', '15', '2021-02-08 15:03:37', NULL);
 /*!40000 ALTER TABLE `post_comments` ENABLE KEYS */;
 
 -- Dumping structure for table cari_teman.users

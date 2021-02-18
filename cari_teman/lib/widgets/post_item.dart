@@ -88,7 +88,11 @@ class _PostItemState extends State<PostItem> {
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return Conversation(id: widget.id);
+                return Conversation(
+                    id: widget.id,
+                    user: widget.name,
+                    avatar: widget.dp,
+                    title: widget.text);
               },
             ),
           );

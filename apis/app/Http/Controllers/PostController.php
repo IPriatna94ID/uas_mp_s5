@@ -39,7 +39,7 @@ class PostController extends Controller
         ]);
 
         $image_base64 = base64_decode($request->input('file'));
-        $path = 'uploads/' . $request->input('file_name');
+        $path = "uploads/" . $request->input('file_name');
         file_put_contents($path, $image_base64);
 
         $model = new Post();

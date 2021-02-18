@@ -1,9 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:cari_teman/utils/app_url.dart';
+import 'package:cari_teman/views/profile.dart';
 
 class ChatBubble extends StatefulWidget {
-  final String message, time, username, type, replyText, replyName;
+  final int uid;
+  final String message, time, username, avatar, type, replyText, replyName;
   final bool isMe, isGroup, isReply;
 
   ChatBubble(
@@ -11,7 +13,9 @@ class ChatBubble extends StatefulWidget {
       @required this.time,
       @required this.isMe,
       @required this.isGroup,
+      @required this.uid,
       @required this.username,
+      @required this.avatar,
       @required this.type,
       @required this.replyText,
       @required this.isReply,
@@ -157,14 +161,52 @@ class _ChatBubbleState extends State<ChatBubble> {
                 padding: EdgeInsets.all(widget.type == "text" ? 5 : 0),
                 child: widget.type == "text"
                     ? !widget.isReply
-                        ? Text(
-                            widget.message,
-                            style: TextStyle(
-                              color: widget.isMe
-                                  ? Colors.white
-                                  : Theme.of(context).textTheme.headline6.color,
-                            ),
-                          )
+                        ? !widget.isMe
+                            ? ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: (widget.avatar != "" &&
+                                          widget.avatar != null)
+                                      ? NetworkImage(
+                                          AppUrl.baseURL + "${widget.avatar}")
+                                      : AssetImage(
+                                          "assets/images/cm${random.nextInt(10)}.jpeg",
+                                        ),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Profile(uid: widget.uid)),
+                                  );
+                                },
+                                contentPadding: EdgeInsets.all(0),
+                                title: Text(
+                                  widget.message,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                // trailing: Text(
+                                //   "${widget.time}",
+                                //   style: TextStyle(
+                                //     fontWeight: FontWeight.w300,
+                                //     fontSize: 11,
+                                //   ),
+                                // ),
+                              )
+                            : Text(
+                                widget.message,
+                                style: TextStyle(
+                                  color: widget.isMe
+                                      ? Colors.white
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .headline6
+                                          .color,
+                                ),
+                              )
                         : Container(
                             alignment: Alignment.centerLeft,
                             child: Text(

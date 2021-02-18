@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:cari_teman/widgets/chat_bubble.dart';
-import 'package:cari_teman/utils/data.dart';
+// import 'package:cari_teman/utils/data.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:cari_teman/utils/app_url.dart';
@@ -17,21 +17,27 @@ import 'package:cari_teman/main.dart';
 class Conversation extends StatefulWidget {
   final int id;
 
+  final String title, user, avatar;
   Conversation({
     Key key,
     @required this.id,
+    @required this.title,
+    @required this.user,
+    @required this.avatar,
   }) : super(key: key);
 
   @override
   _ConversationState createState() => _ConversationState();
 }
 
-class _ConversationState extends State<Conversation> {
+class _ConversationState extends State<Conversation>
+    with SingleTickerProviderStateMixin {
   static Random random = Random();
   // String name = names[random.nextInt(10)];
   int uid, fid, posts, followers, following;
   String name, email, avatar, fname, femail, favatar, postText;
   Future<Post> futurePost;
+  AnimationController _animationController;
 
   final formKey = new GlobalKey<FormState>();
   @override
@@ -43,6 +49,8 @@ class _ConversationState extends State<Conversation> {
     avatar = "";
     _loadCounter();
     futurePost = fetchPost();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
   }
 
   _loadCounter() async {
@@ -128,17 +136,18 @@ class _ConversationState extends State<Conversation> {
               Padding(
                 padding: EdgeInsets.only(left: 0.0, right: 10.0),
                 child: CircleAvatar(
-                    backgroundImage: (favatar != "" && favatar != null)
-                        ? NetworkImage(AppUrl.baseURL + favatar)
-                        : AssetImage(
-                            "assets/images/cm${random.nextInt(10)}.jpeg")),
+                    backgroundImage:
+                        (widget.avatar != "" && widget.avatar != null)
+                            ? NetworkImage(AppUrl.baseURL + widget.avatar)
+                            : AssetImage(
+                                "assets/images/cm${random.nextInt(10)}.jpeg")),
               ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      fname,
+                      widget.user,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -146,7 +155,7 @@ class _ConversationState extends State<Conversation> {
                     ),
                     SizedBox(height: 5),
                     Text(
-                      "Online",
+                      widget.title,
                       style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 11,
@@ -184,7 +193,9 @@ class _ConversationState extends State<Conversation> {
                   if (snapshot.hasData) {
                     return ChatBubble(
                       message: AppUrl.baseURL + snapshot.data.path,
+                      uid: snapshot.data.user_id,
                       username: snapshot.data.name,
+                      avatar: "",
                       time: snapshot.data.created_at,
                       type: "snapshot.data",
                       replyText: snapshot.data.text,
@@ -211,7 +222,9 @@ class _ConversationState extends State<Conversation> {
                         Map comment = snapshot.data[index];
                         return ChatBubble(
                           message: comment['text'],
+                          uid: int.parse(comment['created_by']),
                           username: comment['name'],
+                          avatar: comment['user']['avatar'],
                           time: comment['created_at'],
                           type: "text",
                           replyText: comment['text'],

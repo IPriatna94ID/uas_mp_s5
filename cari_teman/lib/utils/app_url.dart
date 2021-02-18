@@ -1,9 +1,9 @@
 class AppUrl {
-  static const String liveBaseURL = "https://apanya.com/api/v1";
+  static const String liveBaseURL = "https://cariteman.allona.id/public/";
   static const String localBaseURL =
       "http://192.168.1.3/latihan/mp/apis/public/";
 
-  static const String baseURL = localBaseURL;
+  static const String baseURL = liveBaseURL;
   static const String login = baseURL + "login";
   static const String register = baseURL + "register";
   static const String getProfile = baseURL + "profile/";

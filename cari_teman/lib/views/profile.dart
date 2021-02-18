@@ -28,13 +28,14 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
   static Random random = Random();
   User user;
   int userId, posts, followers, following;
   String name, email, avatar;
   final GlobalKey<ScaffoldState> _formkey = new GlobalKey<ScaffoldState>();
   final formKey = new GlobalKey<FormState>();
+  AnimationController _animationController;
 
   File _image;
   bool dialVisible = true;
@@ -56,6 +57,8 @@ class _ProfileState extends State<Profile> {
     avatar = "";
     _loadCounter();
     futureProfile = fetchUser();
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
   }
 
   _loadCounter() async {
@@ -345,9 +348,8 @@ class _ProfileState extends State<Profile> {
                 return Center(
                   child: Text("${snapshot.error}"),
                 );
-                ;
               }
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             },
           ),
         ),

@@ -1,5 +1,6 @@
 <?php
 
+// use DB;
 /** @var \Laravel\Lumen\Routing\Router $router */
 
 /*
@@ -42,3 +43,18 @@ $router->delete('/friends/{fid}/{uid}', ['uses' => 'FriendsController@delete']);
 $router->post('/comments', ['uses' => 'CommentsController@save']);
 
 $router->get('/comments/{postId}', ['uses' => 'CommentsController@getAll']);
+
+
+$router->get('/test', function () use ($router) {
+
+   	try {
+	     $db = \DB::connection();
+        if($db->getPdo()){
+            echo "Yes! Successfully connected to the DB: " . $db->getDatabaseName();
+        }else{
+            die("Could not find the database ".env('DB_DATABASE').". Please check your configuration.");
+        }
+    } catch (\Exception $e) {
+        die("Could not open connection to database server ".env('DB_USERNAME').".  Please check your configuration.");
+    }
+});

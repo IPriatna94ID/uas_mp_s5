@@ -248,6 +248,9 @@ class _PostFormState extends State<PostForm> {
       if (_image != "" && form.validate()) {
         form.save();
         base64Image = base64Encode(_image.readAsBytesSync());
+        JsonEncoder encoder = new JsonEncoder.withIndent('  ');
+        String prettyprint = encoder.convert(base64Image);
+        debugPrint(prettyprint);
         fileName = _image.path.split("/").last;
         auth
             .submitPost(userId.toString(), fileName, base64Image, postText)
@@ -256,7 +259,7 @@ class _PostFormState extends State<PostForm> {
             Navigate.pushPageReplacement(context, MyApp());
           } else {
             Flushbar(
-              title: "Registration Failed",
+              title: "Request Failed",
               message: response.toString(),
               duration: Duration(seconds: 10),
             ).show(context);

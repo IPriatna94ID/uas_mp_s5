@@ -39,22 +39,29 @@ class AuthProvider with ChangeNotifier {
     Response response = await post(
       AppUrl.login,
       body: json.encode(loginData),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Charset': 'utf-8'
+      },
     );
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
+      var status = false;
+      if (responseData['status'] == "success") {
+        var userData = responseData['data'];
 
-      var userData = responseData['data'];
+        User authUser = User.fromJson(userData);
 
-      User authUser = User.fromJson(userData);
+        UserPreferences().saveUser(authUser);
 
-      UserPreferences().saveUser(authUser);
+        _loggedInStatus = Status.LoggedIn;
+        status = true;
+      }
 
-      _loggedInStatus = Status.LoggedIn;
       notifyListeners();
 
-      result = {'status': true, 'message': 'Successful', 'user': authUser};
+      result = {'status': status, 'message': responseData['message']};
     } else {
       _loggedInStatus = Status.NotLoggedIn;
       notifyListeners();
@@ -76,10 +83,11 @@ class AuthProvider with ChangeNotifier {
     };
 
     return await post(AppUrl.register,
-            body: json.encode(registrationData),
-            headers: {'Content-Type': 'application/json'})
-        .then(onValue)
-        .catchError(onError);
+        body: json.encode(registrationData),
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Charset': 'utf-8'
+        }).then(onValue).catchError(onError);
   }
 
   static Future<FutureOr> onValue(Response response) async {
@@ -118,10 +126,11 @@ class AuthProvider with ChangeNotifier {
     };
 
     return await post(AppUrl.updateProfile + uid,
-            body: json.encode(registrationData),
-            headers: {'Content-Type': 'application/json'})
-        .then(onUpdate)
-        .catchError(onError);
+        body: json.encode(registrationData),
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Charset': 'utf-8'
+        }).then(onUpdate).catchError(onError);
   }
 
   Future<Map<String, dynamic>> updateAvatar(
@@ -132,10 +141,11 @@ class AuthProvider with ChangeNotifier {
     };
 
     return await post(AppUrl.updateProfile + userId,
-            body: json.encode(postData),
-            headers: {'Content-Type': 'application/json'})
-        .then(onUpdate)
-        .catchError(onError);
+        body: json.encode(postData),
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Charset': 'utf-8'
+        }).then(onUpdate).catchError(onError);
   }
 
   static Future<FutureOr> onUpdate(Response response) async {
@@ -172,22 +182,21 @@ class AuthProvider with ChangeNotifier {
       'file_name': fileName,
       'text': postText
     };
-    print(postData);
     print(AppUrl.post);
-    return await post(AppUrl.post,
-            body: json.encode(postData),
-            headers: {'Content-Type': 'application/json'})
-        .then(onSaved)
-        .catchError(onError);
+    return await post(AppUrl.post, body: json.encode(postData), headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Charset': 'utf-8'
+    }).then(onSaved).catchError(onError);
   }
 
   Future<Map<String, dynamic>> follow(String fid, String uid) async {
     final Map<String, dynamic> params = {'user_id': fid};
     return await post(AppUrl.friends + uid,
-            body: json.encode(params),
-            headers: {'Content-Type': 'application/json'})
-        .then(onSaved)
-        .catchError(onError);
+        body: json.encode(params),
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Charset': 'utf-8'
+        }).then(onSaved).catchError(onError);
   }
 
   Future<Map<String, dynamic>> postComment(
@@ -198,18 +207,17 @@ class AuthProvider with ChangeNotifier {
       'text': postText
     };
     print(postData);
-    return await post(AppUrl.comments,
-            body: json.encode(postData),
-            headers: {'Content-Type': 'application/json'})
-        .then(onSaved)
-        .catchError(onError);
+    return await post(AppUrl.comments, body: json.encode(postData), headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Charset': 'utf-8'
+    }).then(onSaved).catchError(onError);
   }
 
   Future<Map<String, dynamic>> unfollow(String fid, String uid) async {
-    return await delete(AppUrl.friends + fid + '/' + uid,
-            headers: {'Content-Type': 'application/json'})
-        .then(onSaved)
-        .catchError(onError);
+    return await delete(AppUrl.friends + fid + '/' + uid, headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Charset': 'utf-8'
+    }).then(onSaved).catchError(onError);
   }
 
   static Future<FutureOr> onSaved(Response response) async {
