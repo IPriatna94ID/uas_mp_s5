@@ -83,7 +83,9 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
 
   Future<UserProfile> fetchUser() async {
     final response = await http.get(AppUrl.getProfile + widget.uid.toString());
+    print(AppUrl.getProfile + widget.uid.toString());
     if (response.statusCode == 200) {
+      print(jsonDecode(response.body));
       return UserProfile.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to load album');
@@ -121,8 +123,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       }
     }
 
-    void follow(String uid, String fid) async {
-      auth.follow(uid, fid).then((response) {
+    void follow(String cuid, String cfid) async {
+      auth.follow(cuid, cfid).then((response) {
         if (response['status']) {
           Navigate.pushPageReplacement(context, MyApp());
         } else {
@@ -135,8 +137,8 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       });
     }
 
-    void unfollow(String fid, String uid) async {
-      auth.unfollow(fid, uid).then((response) {
+    void unfollow(String cfid, String cuid) async {
+      auth.unfollow(cfid, cuid).then((response) {
         if (response['status']) {
           Navigate.pushPageReplacement(context, MyApp());
         } else {

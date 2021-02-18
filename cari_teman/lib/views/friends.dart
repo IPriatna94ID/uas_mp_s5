@@ -9,6 +9,7 @@ import 'package:cari_teman/providers/auth.dart';
 import 'package:cari_teman/utils/router.dart';
 import 'package:cari_teman/main.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:cari_teman/views/profile.dart';
 
 class Friends extends StatefulWidget {
   final int uid;
@@ -103,7 +104,14 @@ class _FriendsState extends State<Friends> {
                               widget.uid.toString());
                         },
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Profile(uid: friend['user_id'])),
+                        );
+                      },
                     ),
                   );
                 },

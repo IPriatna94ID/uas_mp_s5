@@ -244,8 +244,7 @@ class _PostFormState extends State<PostForm> {
 
     var submitForm = () {
       final form = formKey.currentState;
-
-      if (_image != "" && form.validate()) {
+      if (_image != null && form.validate()) {
         form.save();
         base64Image = base64Encode(_image.readAsBytesSync());
         JsonEncoder encoder = new JsonEncoder.withIndent('  ');

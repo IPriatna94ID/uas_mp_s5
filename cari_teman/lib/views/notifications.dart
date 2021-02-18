@@ -12,6 +12,7 @@ import 'package:cari_teman/main.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:intl/intl.dart';
 import 'package:date_format/date_format.dart';
+import 'package:cari_teman/views/profile.dart';
 
 class Notifications extends StatefulWidget {
   final int uid;
@@ -127,7 +128,14 @@ class _NotificationsState extends State<Notifications> {
                           }
                         },
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Profile(uid: notif['created_by'])),
+                        );
+                      },
                     ),
                   );
                 },
