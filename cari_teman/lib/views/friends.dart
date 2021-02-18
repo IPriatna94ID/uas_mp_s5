@@ -78,7 +78,7 @@ class _FriendsState extends State<Friends> {
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundImage: (friend['user']['avatar'] != "" ||
+                        backgroundImage: (friend['user']['avatar'] != "" &&
                                 friend['user']['avatar'] != null)
                             ? NetworkImage(
                                 AppUrl.baseURL + friend['user']['avatar'])

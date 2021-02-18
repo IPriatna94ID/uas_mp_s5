@@ -111,14 +111,20 @@ class _NotificationsState extends State<Notifications> {
                           Text(DateTime.parse(notif['created_at']).toString()),
                       trailing: FlatButton(
                         child: Text(
-                          "Follow",
+                          (notif['followed_count'] > 0) ? "Followed" : "Follow",
                           style: TextStyle(
                             color: Colors.white,
                           ),
                         ),
-                        color: Colors.green,
+                        color: (notif['followed_count'] > 0)
+                            ? Colors.grey
+                            : Colors.green,
                         onPressed: () {
-                          follow(notif['user_id'].toString());
+                          if (notif['followed_count'] > 0) {
+                            return false;
+                          } else {
+                            follow(notif['created_by'].toString());
+                          }
                         },
                       ),
                       onTap: () {},

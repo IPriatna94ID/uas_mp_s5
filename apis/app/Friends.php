@@ -17,4 +17,9 @@ class Friends extends Model
     {
     	return $this->hasOne(User::class, 'id', 'created_by');
     }
+
+    public function followed()
+    {
+    	return $this->hasOne(Friends::class, 'created_by', 'user_id');
+    }
 }

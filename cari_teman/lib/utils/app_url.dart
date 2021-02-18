@@ -8,7 +8,7 @@ class AppUrl {
   static const String register = baseURL + "register";
   static const String getProfile = baseURL + "profile/";
   static const String updateProfile = baseURL + "update_profile/";
-  static const String post = baseURL + "post/";
+  static const String post = baseURL + "post";
   static const String postList = baseURL + "post";
   static const String postDetail = baseURL + "post/";
   static const String myPost = baseURL + "my_post/";

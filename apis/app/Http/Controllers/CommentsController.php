@@ -20,8 +20,8 @@ class CommentsController extends Controller
     }
 
     public function getall($postId = false){
-        if(!empty($id)){
-            $data = PostComments::where('user_id', $id)->orderBy('id', 'ASC')->with('user', 'cb')->get();
+        if(!empty($postId)){
+            $data = PostComments::where('post_id', $postId)->orderBy('id', 'ASC')->with('user', 'cb')->get();
         }else{
             $data = PostComments::orderBy('id', 'ASC')->with('user', 'cb')->get();            
         }

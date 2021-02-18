@@ -47,7 +47,7 @@ class _ConversationState extends State<Conversation> {
 
   _loadCounter() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final response = await http.get(AppUrl.post + widget.id.toString());
+    final response = await http.get(AppUrl.post + '/' + widget.id.toString());
     if (response.statusCode == 200) {
       Map<String, dynamic> data = jsonDecode(response.body);
       setState(() {
@@ -66,7 +66,7 @@ class _ConversationState extends State<Conversation> {
   }
 
   Future<Post> fetchPost() async {
-    final response = await http.get(AppUrl.post + widget.id.toString());
+    final response = await http.get(AppUrl.post + "/" + widget.id.toString());
     if (response.statusCode == 200) {
       return Post.fromJson(jsonDecode(response.body));
     } else {
@@ -75,29 +75,9 @@ class _ConversationState extends State<Conversation> {
   }
 
   Future<List<dynamic>> fetchComments() async {
-    var result = await http.get(AppUrl.comments + '/' + widget.id.toString());
+    // print(AppUrl.comments + "/" + widget.id.toString());
+    var result = await http.get(AppUrl.comments + "/" + widget.id.toString());
     return json.decode(result.body);
-  }
-
-  Color chatBubbleColor() {
-    // if (widget.isMe) {
-    //   return Theme.of(context).accentColor;
-    // } else {
-    //   if (Theme.of(context).brightness == Brightness.dark) {
-    //     return Colors.grey[800];
-    //   } else {
-    //     return Colors.grey[200];
-    //   }
-    // }
-    return Theme.of(context).accentColor;
-  }
-
-  Color chatBubbleReplyColor() {
-    if (Theme.of(context).brightness == Brightness.dark) {
-      return Colors.grey[600];
-    } else {
-      return Colors.grey[50];
-    }
   }
 
   @override
@@ -117,7 +97,7 @@ class _ConversationState extends State<Conversation> {
             Navigate.pushPageReplacement(context, MyApp());
           } else {
             Flushbar(
-              title: "Registration Failed",
+              title: "Request Failed",
               message: response.toString(),
               duration: Duration(seconds: 10),
             ).show(context);
@@ -148,11 +128,10 @@ class _ConversationState extends State<Conversation> {
               Padding(
                 padding: EdgeInsets.only(left: 0.0, right: 10.0),
                 child: CircleAvatar(
-                    backgroundImage: (favatar == null && favatar == "")
-                        ? AssetImage(
-                            "assets/images/cm${random.nextInt(10)}.jpeg",
-                          )
-                        : NetworkImage(AppUrl.baseURL + favatar)),
+                    backgroundImage: (favatar != "" && favatar != null)
+                        ? NetworkImage(AppUrl.baseURL + favatar)
+                        : AssetImage(
+                            "assets/images/cm${random.nextInt(10)}.jpeg")),
               ),
               Expanded(
                 child: Column(
@@ -236,7 +215,10 @@ class _ConversationState extends State<Conversation> {
                           time: comment['created_at'],
                           type: "text",
                           replyText: comment['text'],
-                          isMe: (comment['user_id'] == uid) ? true : false,
+                          isMe: (comment['created_by'].toString() ==
+                                  uid.toString())
+                              ? true
+                              : false,
                           isGroup: false,
                           isReply: false,
                           replyName: comment['name'],
@@ -319,6 +301,7 @@ class Post {
   final String text;
   final String path;
   final String created_at;
+  final int created_by;
 
   Post(
       {this.id,
@@ -327,7 +310,8 @@ class Post {
       this.avatar,
       this.text,
       this.path,
-      this.created_at});
+      this.created_at,
+      this.created_by});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
@@ -338,6 +322,7 @@ class Post {
       text: json['text'],
       path: json['path'],
       created_at: json['created_at'],
+      created_by: json['created_by'],
     );
   }
 }

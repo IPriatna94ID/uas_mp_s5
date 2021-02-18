@@ -172,6 +172,8 @@ class AuthProvider with ChangeNotifier {
       'file_name': fileName,
       'text': postText
     };
+    print(postData);
+    print(AppUrl.post);
     return await post(AppUrl.post,
             body: json.encode(postData),
             headers: {'Content-Type': 'application/json'})
@@ -179,7 +181,7 @@ class AuthProvider with ChangeNotifier {
         .catchError(onError);
   }
 
-  Future<Map<String, dynamic>> follow(String uid, String fid) async {
+  Future<Map<String, dynamic>> follow(String fid, String uid) async {
     final Map<String, dynamic> params = {'user_id': fid};
     return await post(AppUrl.friends + uid,
             body: json.encode(params),
@@ -195,6 +197,7 @@ class AuthProvider with ChangeNotifier {
       'user_id': userId,
       'text': postText
     };
+    print(postData);
     return await post(AppUrl.comments,
             body: json.encode(postData),
             headers: {'Content-Type': 'application/json'})
@@ -212,6 +215,7 @@ class AuthProvider with ChangeNotifier {
   static Future<FutureOr> onSaved(Response response) async {
     var result;
     final Map<String, dynamic> responseData = json.decode(response.body);
+    print(responseData);
     if (response.statusCode == 200) {
       result = {'status': true, 'message': 'Data saved'};
     } else {

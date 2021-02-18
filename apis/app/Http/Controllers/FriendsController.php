@@ -18,7 +18,7 @@ class FriendsController extends Controller
     }
 
     public function getall($field, $id){
-        $data = Friends::where($field, $id)->orderBy('id', 'DESC')->with('user', 'cb')->get();
+        $data = Friends::where($field, $id)->orderBy('id', 'DESC')->with('user', 'cb')->withCount('followed')->get();
         return response($data);
     }
     public function getbyid($id){

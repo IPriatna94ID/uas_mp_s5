@@ -29,13 +29,14 @@ CREATE TABLE IF NOT EXISTS `friends` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
--- Dumping data for table cari_teman.friends: 1 rows
+-- Dumping data for table cari_teman.friends: 2 rows
 DELETE FROM `friends`;
 /*!40000 ALTER TABLE `friends` DISABLE KEYS */;
 INSERT INTO `friends` (`id`, `user_id`, `status`, `created_at`, `created_by`, `updated_at`) VALUES
-	(19, 14, 0, '2021-02-08 05:33:27', 15, '2021-02-08 05:33:27');
+	(23, 14, 0, '2021-02-08 15:15:49', 15, '2021-02-08 15:15:49'),
+	(22, 15, 0, '2021-02-08 14:51:41', 14, '2021-02-08 14:51:41');
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
 
 -- Dumping structure for table cari_teman.migrations
@@ -169,12 +170,13 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_user` (`user_id`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
--- Dumping data for table cari_teman.posts: 1 rows
+-- Dumping data for table cari_teman.posts: 2 rows
 DELETE FROM `posts`;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
 INSERT INTO `posts` (`id`, `user_id`, `text`, `path`, `status`, `created_at`, `updated_at`) VALUES
+	(17, 15, 'test lagi', 'uploads/scaled_e76fca82-fa02-4352-ac78-7b13f17d303f4158346137723966576.jpg', '1', '2021-02-08 14:57:51', '2021-02-08 14:57:51'),
 	(16, 14, 'test post', 'uploads/scaled_77b010e2-0699-4c81-80d9-22d97022a0305043738510803057138.jpg', '1', '2021-02-08 05:14:41', '2021-02-08 05:14:41');
 /*!40000 ALTER TABLE `posts` ENABLE KEYS */;
 
@@ -191,14 +193,15 @@ CREATE TABLE IF NOT EXISTS `post_comments` (
   `updated_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table cari_teman.post_comments: 2 rows
+-- Dumping data for table cari_teman.post_comments: 3 rows
 DELETE FROM `post_comments`;
 /*!40000 ALTER TABLE `post_comments` DISABLE KEYS */;
 INSERT INTO `post_comments` (`id`, `post_id`, `user_id`, `text`, `created_at`, `created_by`, `updated_at`, `updated_by`) VALUES
 	(5, 16, 14, 'wut?', '2021-02-08 10:13:58', '14', '2021-02-08 10:13:58', NULL),
-	(4, 16, 15, 'test', '2021-02-08 09:57:27', '15', '2021-02-08 09:57:27', NULL);
+	(4, 16, 15, 'test', '2021-02-08 09:57:27', '15', '2021-02-08 09:57:27', NULL),
+	(6, 16, 15, 'mantips', '2021-02-08 15:03:37', '15', '2021-02-08 15:03:37', NULL);
 /*!40000 ALTER TABLE `post_comments` ENABLE KEYS */;
 
 -- Dumping structure for table cari_teman.users
@@ -212,14 +215,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table cari_teman.users: 2 rows
+-- Dumping data for table cari_teman.users: 3 rows
 DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `avatar`, `created_at`, `updated_at`) VALUES
-	(14, 'Iip', 'iip@mail.com', 'cc03e747a6afbbcbf8be7668acfebee5', 'uploads/scaled_ae877434-f101-4598-8223-1092d49275598524535284670157587.jpg', '2021-02-08 12:08:28', '2021-02-08 12:30:21'),
-	(15, 'priatna', 'priatna@mail.com', 'cc03e747a6afbbcbf8be7668acfebee5', NULL, '2021-02-08 12:28:47', '2021-02-08 12:28:47');
+	(14, 'Iip', 'iip@mail.com', 'cc03e747a6afbbcbf8be7668acfebee5', 'uploads/scaled_2ef5173e-fc76-4b6c-bca5-fed8d7bdafba4502680115558891499.jpg', '2021-02-08 12:08:28', '2021-02-08 22:17:06'),
+	(15, 'priatna', 'priatna@mail.com', 'cc03e747a6afbbcbf8be7668acfebee5', NULL, '2021-02-08 12:28:47', '2021-02-08 22:16:41'),
+	(16, 'test', 'test@mail.com', 'cc03e747a6afbbcbf8be7668acfebee5', NULL, '2021-02-08 22:19:46', '2021-02-08 22:19:46');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
