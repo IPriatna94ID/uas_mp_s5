@@ -52,7 +52,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     final currentScroll = _scrollController.position.pixels;
   }
 
-  Future<List<dynamic>> fetchUsers() async {
+  Future<List<dynamic>> fetchFeeds() async {
     var result = await http.get(AppUrl.postList);
     return json.decode(result.body);
   }
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ),
       body: Container(
         child: FutureBuilder<List<dynamic>>(
-          future: fetchUsers(),
+          future: fetchFeeds(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(

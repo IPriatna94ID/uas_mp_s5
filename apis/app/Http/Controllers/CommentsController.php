@@ -27,6 +27,7 @@ class CommentsController extends Controller
         }
         return response($data);
     }
+
     public function getbyid($id){
         $data = PostComments::where('id', $id)->with('user')->first();
         return response ($data);
@@ -77,4 +78,11 @@ class CommentsController extends Controller
     
         return response('Berhasil Menghapus Data');
     }
+
+    public function history($uid = false){
+        \DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+        $data = PostComments::where('user_id', $uid)->orWhere('created_by', $uid)->groupBy('post_id')->orderBy('id', 'ASC')->with('post', 'post.user', 'cb')->get();
+        return response($data);
+    }
+
 }

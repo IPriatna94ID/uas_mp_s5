@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
         controller: _pageController,
         onPageChanged: onPageChanged,
         children: <Widget>[
-          Chats(),
+          Chats(uid: uid),
           Friends(uid: uid),
           Home(),
           Notifications(uid: uid),

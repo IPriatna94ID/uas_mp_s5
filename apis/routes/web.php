@@ -44,6 +44,7 @@ $router->post('/comments', ['uses' => 'CommentsController@save']);
 
 $router->get('/comments/{postId}', ['uses' => 'CommentsController@getAll']);
 
+$router->get('/chat/{uid}', ['uses' => 'CommentsController@history']);
 
 $router->get('/test', function () use ($router) {
 

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cari_teman/widgets/chat/conversation.dart';
+import 'dart:math';
+import 'package:cari_teman/utils/app_url.dart';
+import 'package:cari_teman/widgets/chat/conversation.dart';
+import 'package:cari_teman/views/profile.dart';
 
 class ChatItem extends StatefulWidget {
   final String dp;
@@ -7,10 +11,11 @@ class ChatItem extends StatefulWidget {
   final String time;
   final String msg;
   final bool isOnline;
-  final int counter;
+  final int id, counter;
 
   ChatItem({
     Key key,
+    @required this.id,
     @required this.dp,
     @required this.name,
     @required this.time,
@@ -24,6 +29,7 @@ class ChatItem extends StatefulWidget {
 }
 
 class _ChatItemState extends State<ChatItem> {
+  static Random random = Random();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,9 +39,12 @@ class _ChatItemState extends State<ChatItem> {
         leading: Stack(
           children: <Widget>[
             CircleAvatar(
-              backgroundImage: AssetImage(
-                "${widget.dp}",
-              ),
+              backgroundImage: (widget.dp != "" && widget.dp != null)
+                  ? NetworkImage(AppUrl.baseURL + "${widget.dp}")
+                  : AssetImage(
+                      "assets/images/cm${random.nextInt(10)}.jpeg",
+                    ),
+              backgroundColor: Colors.transparent,
               radius: 25,
             ),
             Positioned(
@@ -116,7 +125,11 @@ class _ChatItemState extends State<ChatItem> {
           Navigator.of(context, rootNavigator: true).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return Conversation();
+                return Conversation(
+                    id: widget.id,
+                    user: widget.name,
+                    avatar: widget.dp,
+                    title: widget.msg);
               },
             ),
           );

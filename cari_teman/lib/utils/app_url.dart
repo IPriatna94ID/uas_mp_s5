@@ -14,5 +14,6 @@ class AppUrl {
   static const String myPost = baseURL + "my_post/";
   static const String friends = baseURL + "friends/";
   static const String comments = baseURL + "comments";
+  static const String chat = baseURL + "chat/";
   static const String forgotPassword = baseURL + "forgot-password";
 }
